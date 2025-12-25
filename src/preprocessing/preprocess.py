@@ -6,16 +6,27 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 import os
 
-def load_data(path=r"C:\Users\VICTUS\OneDrive\Desktop\FINAL YEAR PROJECT\EEG Deep Learning project\data\mental-state.csv"):
-    df = pd.read_csv(path)
+def load_data():
+    import os
+    import pandas as pd
+
+    BASE_DIR = os.path.dirname(
+        os.path.dirname(
+            os.path.dirname(os.path.abspath(__file__))
+        )
+    )
+    DATA_PATH = os.path.join(BASE_DIR, "data", "mental-state.csv")
+
+    df = pd.read_csv(DATA_PATH)
     X = df.drop("Label", axis=1)
     y = df["Label"].astype(int)
     return X, y
 
+
 def preprocess_split(path=r"C:\Users\VICTUS\OneDrive\Desktop\FINAL YEAR PROJECT\EEG Deep Learning project\data\mental-state.csv", test_size=0.2, random_state=42,
                      do_pca=False, pca_components=200, save_dir="saved_models"):
     os.makedirs(save_dir, exist_ok=True)
-    X, y = load_data(path)
+    X, y = load_data()
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=test_size, stratify=y, random_state=random_state
     )
